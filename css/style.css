@@ -508,6 +508,12 @@ input::placeholder {
   gap: var(--space-l);
 }
 
+/* The slide-in menu's top bar and backdrop only exist on phones */
+.nav-head,
+.nav-backdrop {
+  display: none;
+}
+
 .nav-list a {
   display: block;
   padding-block: 0.85rem;
@@ -1971,41 +1977,114 @@ address {
     display: inline-flex;
   }
 
-  /* The nav is folded shut until main.js adds the class "is-open". The
-     grid row grows from 0fr to 1fr (the height of the links) so it slides
-     open and shut, while the links fade and drop into place. visibility
-     keeps the closed links out of the Tab order and away from screen
-     readers; it flips only once the closing slide has finished. */
+  /* On phones the nav is a panel that slides in from the left over the
+     page, with the page dimmed behind it. main.js adds "is-open".
+     visibility keeps the closed menu out of the Tab order and away from
+     screen readers; it flips only after the closing slide has finished. */
   .site-nav {
-    display: grid;
-    grid-template-rows: 0fr;
-    border-block-width: 0;
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 50;
+    width: min(20rem, 85vw);
+    overflow-y: auto;
+    border: 0;
+    border-right: 2px solid var(--ink);
+    background: var(--paper);
+    box-shadow: 0 0 2.5rem rgba(0, 0, 0, 0.35);
+    transform: translateX(-100%);
     visibility: hidden;
-    transition: grid-template-rows 0.18s ease-in, border-width 0.18s, visibility 0s 0.18s;
+    transition: transform 0.2s ease-in, visibility 0s 0.2s;
   }
 
   .site-nav.is-open {
-    grid-template-rows: 1fr;
-    border-block-width: 1px;
+    transform: none;
     visibility: visible;
-    transition: grid-template-rows 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), border-width 0.22s;
+    transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
-  .nav-list {
+  .nav-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, visibility 0s 0.2s;
+  }
+
+  .site-nav.is-open + .nav-backdrop {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.28s;
+  }
+
+  .menu-open,
+  .menu-open body {
+    overflow: hidden;
+  }
+
+  .nav-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-s) var(--space-m);
+  }
+
+  .nav-title {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+
+  .nav-close {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+    background: var(--paper);
+    color: var(--ink);
+    cursor: pointer;
+  }
+
+  .nav-close:hover {
+    background: var(--sun);
+    color: #000000;
+  }
+
+  /* The panel sets its own width, so the list drops .wrap's sizing */
+  .site-nav .nav-list {
     flex-direction: column;
     gap: 0;
-    min-height: 0;
-    overflow: hidden;
-    opacity: 0;
-    transform: translateY(-0.5rem);
-    transition: opacity 0.15s, transform 0.18s ease-in;
+    width: auto;
+    margin: 0;
+    padding-inline: var(--space-m);
   }
 
-  .site-nav.is-open .nav-list {
+  .nav-list a {
+    font-size: 1.15rem;
+  }
+
+  /* The links slide in just behind the panel, one after another */
+  .nav-list li {
+    opacity: 0;
+    transform: translateX(-1rem);
+    transition: opacity 0.15s, transform 0.15s;
+  }
+
+  .site-nav.is-open .nav-list li {
     opacity: 1;
     transform: none;
-    transition: opacity 0.2s 0.05s, transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition: opacity 0.25s, transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
+
+  .site-nav.is-open .nav-list li:nth-child(1) { transition-delay: 0.06s; }
+  .site-nav.is-open .nav-list li:nth-child(2) { transition-delay: 0.09s; }
+  .site-nav.is-open .nav-list li:nth-child(3) { transition-delay: 0.12s; }
+  .site-nav.is-open .nav-list li:nth-child(4) { transition-delay: 0.15s; }
+  .site-nav.is-open .nav-list li:nth-child(5) { transition-delay: 0.18s; }
 
   .nav-list a {
     border-top: 1px solid var(--line);
@@ -2140,8 +2219,10 @@ address {
 
   .site-nav,
   .site-nav.is-open,
-  .nav-list,
-  .site-nav.is-open .nav-list {
+  .nav-backdrop,
+  .site-nav.is-open + .nav-backdrop,
+  .nav-list li,
+  .site-nav.is-open .nav-list li {
     transition: none;
   }
 

@@ -4,6 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Anime Haven | Manga, figures and events in Dublin</title>
+  <!-- Site icon: the pink 安 logo mark (SVG for sharp tabs, .ico for older browsers, PNG for phone home screens) -->
+  <link rel="icon" href="favicon.ico" sizes="32x32">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <meta name="description" content="Anime Haven is an independent manga and anime shop in Dublin 1. New volumes every Thursday, free click and collect, and free events in the shop.">
 
   <!-- Google Fonts: Dela Gothic One (big headings), Zen Maru Gothic (everything else), Kalam (Sofia's handwriting) -->
@@ -77,6 +81,14 @@
     </div>
 
     <nav class="site-nav" id="site-nav" aria-label="Main">
+      <!-- Top of the slide-in menu on phones (hidden on bigger screens) -->
+      <div class="nav-head">
+        <span class="nav-title">Menu</span>
+        <button class="nav-close" type="button">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+          <span class="visually-hidden">Close menu</span>
+        </button>
+      </div>
       <ul class="wrap nav-list">
         <li><a href="manga.html">Manga</a></li>
         <li><a href="manga.html?cat=figures">Figures</a></li>
@@ -85,6 +97,8 @@
         <li><a href="events.html">Events</a></li>
       </ul>
     </nav>
+    <!-- Dims the page behind the phone menu; tapping it closes the menu -->
+    <div class="nav-backdrop"></div>
   </header>
 
   <main id="main">
