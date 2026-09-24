@@ -104,7 +104,8 @@
     <div class="wrap category-layout" id="category-layout">
       <aside>
         <form id="filters" class="filters">
-          <fieldset>
+          <!-- Swapped for Series and Type on the figures, Blu-ray and merch pages (main.js block 5) -->
+          <fieldset id="genre-filter">
             <legend>Genre</legend>
             <div class="filter-choice"><input type="checkbox" id="genre-action" name="genre" value="action"><label for="genre-action">Action</label></div>
             <div class="filter-choice"><input type="checkbox" id="genre-comedy" name="genre" value="comedy"><label for="genre-comedy">Comedy</label></div>
@@ -115,7 +116,7 @@
             <div class="filter-choice"><input type="checkbox" id="genre-sports" name="genre" value="sports"><label for="genre-sports">Sports</label></div>
           </fieldset>
 
-          <fieldset>
+          <fieldset id="availability-filter">
             <legend>Availability</legend>
             <div class="filter-choice"><input type="checkbox" id="avail-in-stock" name="availability" value="in-stock"><label for="avail-in-stock">In stock</label></div>
             <div class="filter-choice"><input type="checkbox" id="avail-pre-order" name="availability" value="pre-order"><label for="avail-pre-order">Pre-order</label></div>
