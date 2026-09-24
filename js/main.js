@@ -186,6 +186,19 @@ if (productGrid) {
     document.getElementById('page-heading').textContent = label;
     document.getElementById('breadcrumb-current').textContent = label;
     document.getElementById('format-filter').hidden = true; // deluxe editions are a manga thing
+
+    // Genre doesn't mean much for a keychain or a tote bag, so these pages
+    // filter by series and product type instead
+    const items = BOOKS.filter(function (item) { return item.category === cat; });
+    const genreFilter = document.getElementById('genre-filter');
+    genreFilter.hidden = true;
+    const typeFilter = choiceFieldset('Type', 'type', items.map(typeOf));
+    const seriesFilter = choiceFieldset('Series', 'series', items.map(function (item) { return item.series; }));
+    genreFilter.after(seriesFilter, typeFilter);
+
+    // Blu-rays are all in stock, so a lone "In stock" box would do nothing
+    const statuses = new Set(items.map(function (item) { return item.status; }));
+    document.getElementById('availability-filter').hidden = statuses.size < 2;
     markNavLink(cat);
   }
 
@@ -223,6 +236,8 @@ if (productGrid) {
   function applyFilters() {
     const checkedGenres = Array.from(form.querySelectorAll('input[name="genre"]:checked')).map(function (i) { return i.value; });
     const checkedStatus = Array.from(form.querySelectorAll('input[name="availability"]:checked')).map(function (i) { return i.value; });
+    const checkedSeries = Array.from(form.querySelectorAll('input[name="series"]:checked')).map(function (i) { return i.value; });
+    const checkedTypes = Array.from(form.querySelectorAll('input[name="type"]:checked')).map(function (i) { return i.value; });
     const maxPrice = Number(maxPriceInput.value);
     maxPriceOutput.textContent = '€' + maxPrice;
 
@@ -233,7 +248,9 @@ if (productGrid) {
       const statusMatch = checkedStatus.length === 0 || checkedStatus.includes(product.dataset.status);
       const priceMatch = Number(product.dataset.price) <= maxPrice;
       const formatMatch = !deluxeOnly.checked || product.dataset.format === 'deluxe';
-      const show = genreMatch && statusMatch && priceMatch && formatMatch && matchesSearch(product);
+      const seriesMatch = checkedSeries.length === 0 || checkedSeries.includes(product.dataset.series);
+      const typeMatch = checkedTypes.length === 0 || checkedTypes.includes(product.dataset.type);
+      const show = genreMatch && statusMatch && priceMatch && formatMatch && seriesMatch && typeMatch && matchesSearch(product);
       product.hidden = !show;
       if (show) visible += 1;
     });
@@ -525,6 +542,43 @@ function imageFor(item) {
 }
 
 // Build one product card from the <template id="product-card"> on the page
+// The product type for the Type filter, without the details after the comma
+// ("Blu-ray + DVD, 2 discs" -> "Blu-ray + DVD")
+function typeOf(item) {
+  return item.type.split(',')[0];
+}
+
+// Builds a filter fieldset with one checkbox per distinct value, laid out
+// like the ones already in manga.html. Returns an empty, hidden fieldset
+// when there's only one value, since one checkbox wouldn't filter anything.
+function choiceFieldset(legendText, name, values) {
+  const fieldset = document.createElement('fieldset');
+  const legend = document.createElement('legend');
+  legend.textContent = legendText;
+  fieldset.appendChild(legend);
+
+  const unique = Array.from(new Set(values)).sort(function (a, b) {
+    return a.localeCompare(b, 'en', { ignorePunctuation: true }); // so [Oshi no Ko] files under O
+  });
+  unique.forEach(function (value, i) {
+    const choice = document.createElement('div');
+    choice.className = 'filter-choice';
+    const input = document.createElement('input');
+    input.type = 'checkbox';
+    input.id = name + '-' + i;
+    input.name = name;
+    input.value = value;
+    const label = document.createElement('label');
+    label.htmlFor = input.id;
+    label.textContent = value;
+    choice.append(input, label);
+    fieldset.appendChild(choice);
+  });
+
+  fieldset.hidden = unique.length < 2;
+  return fieldset;
+}
+
 function productCard(b) {
   const card = document.getElementById('product-card').content.cloneNode(true);
   const li = card.querySelector('.product');
@@ -537,6 +591,8 @@ function productCard(b) {
   li.dataset.price = b.price;
   li.dataset.title = b.title;
   li.dataset.date = b.date || '';
+  li.dataset.series = b.series || '';
+  li.dataset.type = b.category ? typeOf(b) : '';
 
   card.querySelector('.product-link').href = 'product.html?id=' + b.id;
   card.querySelector('.book').classList.toggle('is-goods', Boolean(b.category));
