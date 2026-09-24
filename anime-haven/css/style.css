@@ -1,0 +1,2100 @@
+/* ==========================================================
+   Anime Haven: one shared stylesheet for every page
+   Order: tokens > base > layout > components > sections > pages > responsive
+   ========================================================== */
+
+
+/* ---------- 1. Design tokens: colours, fonts, spacing ---------- */
+:root {
+  /* Brand colours */
+  --ink: #000000;      /* text and main buttons */
+  --paper: #ffffff;    /* page background */
+  --sakura: #ff8fb1;   /* brand pink: badges, accents */
+  --berry: #d93a73;    /* focus ring (never small text: only 4.4:1 on white) */
+  --sun: #ffe45c;      /* "New" badges, highlights */
+  --tone: #cfcfcf;     /* muted text on black, speedlines */
+
+  /* Calm tints for a shop layout */
+  --blush: #ffeef3;    /* very light pink section background */
+  --mist: #f4f4f4;     /* light grey panels */
+  --line: #e4e4e4;     /* thin borders */
+  --muted: #5c5c5c;    /* secondary text (6.7:1 on white) */
+
+  /* Fonts, with fallbacks */
+  --font-display: "Dela Gothic One", "Arial Black", sans-serif;
+  --font-body: "Zen Maru Gothic", "Trebuchet MS", sans-serif;
+  --font-hand: "Kalam", "Comic Sans MS", cursive;
+
+  /* Spacing scale */
+  --space-2xs: 0.25rem;
+  --space-xs: 0.5rem;
+  --space-s: 1rem;
+  --space-m: 1.5rem;
+  --space-l: 2.5rem;
+  --space-xl: 4rem;
+  --space-2xl: 6rem;
+
+  /* Corners and shadows */
+  --radius-s: 8px;
+  --radius-m: 14px;
+  --radius-l: 22px;
+  --book-shadow: 0 1px 2px rgb(0 0 0 / 0.15), 0 14px 22px -12px rgb(0 0 0 / 0.5);
+
+  --page-width: 82rem;
+}
+
+
+/* ---------- 2. Base styles ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0 0 var(--space-xs);
+  line-height: 1.15;
+}
+
+/* Big headings use the chunky display font */
+h1,
+h2 {
+  font-family: var(--font-display);
+  font-weight: 400; /* Dela Gothic One only has one weight */
+}
+
+h1 { font-size: clamp(2.25rem, 1.6rem + 2.6vw, 3.5rem); }
+h2 { font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.125rem); }
+h3 { font-size: 1.125rem; font-weight: 700; }
+
+p {
+  margin: 0 0 var(--space-s);
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+  text-decoration-color: var(--sakura);
+}
+
+a:hover {
+  text-decoration-color: currentColor;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+/* Visible focus ring for keyboard users on every link, button and input */
+:focus-visible {
+  outline: 3px solid var(--berry);
+  outline-offset: 3px;
+}
+
+input::placeholder {
+  color: var(--muted);
+}
+
+/* Icons are small inline SVG line drawings that take the text colour */
+.icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Hides text visually, screen readers still read it */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: -5rem;
+  left: var(--space-s);
+  z-index: 20;
+  padding: var(--space-xs) var(--space-s);
+  border-radius: var(--radius-s);
+  background: var(--sun);
+  font-weight: 700;
+}
+
+.skip-link:focus {
+  top: var(--space-s);
+}
+
+
+/* ---------- 3. Layout helpers ---------- */
+
+/* Centred column: full width minus a 1rem gutter each side, never wider than --page-width */
+.wrap {
+  width: min(100% - 2rem, var(--page-width));
+  margin-inline: auto;
+}
+
+.section {
+  margin-block: var(--space-2xl);
+}
+
+/* Full-width coloured band (the content inside still uses .wrap) */
+.band {
+  padding-block: var(--space-xl);
+}
+
+.band-blush {
+  /* Halftone dots, like manga screentone */
+  background:
+    radial-gradient(rgb(255 143 177 / 0.35) 1.5px, transparent 2px) 0 0 / 14px 14px,
+    var(--blush);
+}
+
+.band-ink {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* Heading on the left, "view all" link on the right */
+.section-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-xs) var(--space-m);
+  margin-bottom: var(--space-m);
+}
+
+.section-head p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.link-more {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+
+/* ---------- 4. Buttons and badges ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 0.75rem 1.4rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.btn:hover {
+  background: var(--sakura);
+  color: var(--ink);
+}
+
+/* White button with a black border */
+.btn-light {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.btn-light:hover {
+  background: var(--sun);
+}
+
+/* Pink button, black text (never white text on pink) */
+.btn-sakura {
+  border-color: var(--sakura);
+  background: var(--sakura);
+  color: var(--ink);
+}
+
+.btn-sakura:hover {
+  border-color: var(--paper);
+  background: var(--paper);
+}
+
+/* Small "Add to basket" button under each book */
+.btn-add {
+  width: 100%;
+  margin-top: auto;
+  padding: 0.5rem 0.75rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--paper);
+  font-weight: 700;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.btn-add:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* Small label, e.g. "New" or "Pre-order" */
+.badge {
+  display: inline-block;
+  width: fit-content;
+  margin: 0;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+.badge-sun    { background: var(--sun); color: var(--ink); }
+.badge-sakura { background: var(--sakura); color: var(--ink); }
+.badge-ink    { background: var(--ink); color: var(--paper); }
+
+/* "Added ✓" flash: main.js gives the button the class is-added for a moment.
+   The real label turns see-through and the tick is drawn on top, so the
+   button keeps its size and its screen reader text. */
+.js-add {
+  position: relative;
+}
+
+.js-add.is-added {
+  border-color: var(--sakura);
+  background: var(--sakura);
+  color: transparent;
+  animation: pop 0.3s ease;
+}
+
+.js-add.is-added::after {
+  content: "Added \2713";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #000000;
+}
+
+/* ...and the basket counter in the header bounces */
+.basket-count.is-bumped {
+  animation: bump 0.4s ease;
+}
+
+@keyframes pop {
+  50% { transform: scale(1.06); }
+}
+
+@keyframes bump {
+  50% { transform: scale(1.4); }
+}
+
+
+/* ---------- 5. Header: promo bar, logo, search, basket, nav ---------- */
+.promo-bar {
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 0.875rem;
+}
+
+.promo-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-s);
+  padding-block: 0.5rem;
+}
+
+.promo-inner p {
+  margin: 0;
+}
+
+.promo-hours {
+  margin-left: auto; /* sits on the right, next to the close button */
+  color: var(--sun);
+}
+
+/* The × that closes the promo bar. settings.js remembers it was closed. */
+.promo-close {
+  display: grid;
+  place-items: center;
+  padding: 0.2rem;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.promo-close:hover {
+  color: var(--sun);
+}
+
+.promo-closed .promo-bar {
+  display: none;
+}
+
+/* Dark mode button: shows a moon in light mode and a sun in dark mode */
+.theme-toggle {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: var(--paper);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  background: var(--sun);
+}
+
+.icon-sun,
+[data-theme="dark"] .icon-moon {
+  display: none;
+}
+
+[data-theme="dark"] .icon-sun {
+  display: block;
+}
+
+.header-main {
+  display: flex;
+  align-items: center;
+  gap: var(--space-m);
+  padding-block: var(--space-m);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.625rem;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.logo-mark {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: var(--sakura);
+  font-size: 1.3rem;
+}
+
+/* The search box grows to fill the space between logo and links */
+.search {
+  position: relative;
+  flex: 1;
+  max-width: 34rem;
+  margin-inline: auto;
+}
+
+.search input {
+  width: 100%;
+  padding: 0.75rem 3rem 0.75rem 1.25rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--paper);
+}
+
+.search-btn {
+  position: absolute;
+  top: 50%;
+  right: 0.4rem;
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border: 0;
+  border-radius: 50%;
+  background: var(--sakura);
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.header-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.header-link:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--sakura);
+}
+
+/* Round counter on the basket link */
+.basket-count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  padding-inline: 0.35rem;
+  border-radius: 999px;
+  background: var(--sun);
+  font-size: 0.8125rem;
+}
+
+/* Menu button: hidden on big screens, shown in the mobile media query */
+.menu-toggle {
+  display: none;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.9rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--paper);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.site-nav {
+  border-block: 1px solid var(--line);
+}
+
+.nav-list {
+  display: flex;
+  gap: var(--space-l);
+}
+
+.nav-list a {
+  display: block;
+  padding-block: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* Pink bar under the hovered or current nav link */
+.nav-list a:hover,
+.nav-list a[aria-current="page"] {
+  box-shadow: inset 0 -4px 0 var(--sakura);
+}
+
+
+/* ---------- 6. Books: real covers made to look like paperbacks ---------- */
+
+/* Wrapper around every cover image. The ::after layer draws the spine crease. */
+.book {
+  position: relative;
+  display: block;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  border-radius: 3px 6px 6px 3px;
+  background: var(--mist);
+  box-shadow: var(--book-shadow);
+  transition: transform 0.2s ease;
+}
+
+.book img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.book::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+    rgb(0 0 0 / 0.25) 0,
+    rgb(255 255 255 / 0.3) 1.5%,
+    transparent 4%,
+    rgb(0 0 0 / 0.1) 5%,
+    transparent 7%);
+}
+
+/* Figures, Blu-ray and merch: a 4:5 product photo instead of a book, no spine crease */
+.book.is-goods {
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-s);
+  background: #ffffff;
+}
+
+.book.is-goods::after {
+  content: none;
+}
+
+/* Badges and rank numbers sit on top of the cover */
+.book .badge {
+  position: absolute;
+  top: 0.6rem;
+  left: 0.75rem;
+  z-index: 1;
+}
+
+.rank {
+  position: absolute;
+  bottom: 0.6rem;
+  left: 0.75rem;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--sun);
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+}
+
+
+/* ---------- 7. Product rows: a shelf of books that scrolls sideways when it runs out of room ---------- */
+.product-row {
+  --columns: 6;
+  position: relative; /* keeps hidden screen-reader text inside the scrolling row */
+  display: grid;
+  grid-auto-flow: column; /* items go left to right in one row */
+  grid-auto-columns: calc((100% - (var(--columns) - 1) * var(--space-m)) / var(--columns));
+  gap: var(--space-m);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-block: var(--space-s); /* room for the book lift and shadows */
+}
+
+.product-row-5 { --columns: 5; }
+.product-row-4 { --columns: 4; }
+
+.product {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  scroll-snap-align: start;
+}
+
+.product-link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+/* Hovering or focusing a book lifts it off the shelf */
+.product-link:hover .book,
+.product-link:focus-visible .book {
+  transform: translateY(-6px);
+}
+
+.product-title {
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.product-link:hover .product-title {
+  text-decoration: underline;
+  text-decoration-color: var(--sakura);
+}
+
+.product-author {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.product-price {
+  margin: 0 0 var(--space-xs);
+  font-weight: 900;
+}
+
+.product-due {
+  margin-left: 0.25rem;
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 0.875rem;
+}
+
+
+/* ---------- 8. Hero: carousel of slides + two photo tiles ---------- */
+/* minmax(0, ...) lets the carousel column shrink; without it, the three
+   slides inside would force the column to be three slides wide */
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 2.1fr) minmax(0, 1fr);
+  gap: var(--space-s);
+  margin-top: var(--space-m);
+}
+
+.carousel {
+  position: relative;
+}
+
+/* The slides sit in one row. scroll-snap makes each slide stop neatly in the frame. */
+.slides {
+  position: relative;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 100%;
+  height: 100%;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* hide the scrollbar, the buttons do the scrolling */
+  border-radius: var(--radius-l);
+}
+
+.slide {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  align-items: center;
+  gap: var(--space-l);
+  min-height: 30rem;
+  padding: var(--space-xl) var(--space-l) var(--space-xl) var(--space-xl);
+  scroll-snap-align: start;
+}
+
+/* Manga speedlines: thin wedges drawn around one point (behind the books) */
+.slide-blush {
+  background:
+    repeating-conic-gradient(from 0deg at 75% 50%, rgb(255 143 177 / 0.3) 0deg 2deg, transparent 2deg 9deg),
+    var(--blush);
+}
+
+.slide-sun {
+  background:
+    repeating-conic-gradient(from 0deg at 75% 50%, rgb(255 255 255 / 0.55) 0deg 2deg, transparent 2deg 9deg),
+    var(--sun);
+}
+
+.slide-ink {
+  background:
+    repeating-conic-gradient(from 0deg at 75% 50%, rgb(255 255 255 / 0.08) 0deg 2deg, transparent 2deg 9deg),
+    var(--ink);
+  color: var(--paper);
+}
+
+.slide-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-s);
+}
+
+.slide-text p {
+  max-width: 34ch;
+  margin: 0;
+}
+
+.slide-title {
+  margin: 0;
+  font-size: clamp(1.9rem, 1.2rem + 1.8vw, 2.75rem);
+}
+
+.slide-price {
+  font-weight: 900;
+  font-size: 1.25rem;
+}
+
+.slide-quote {
+  color: var(--sakura);
+  font-family: var(--font-hand);
+  font-size: 1.5rem;
+  line-height: 1.35;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  margin-top: var(--space-xs);
+}
+
+/* Fan of three covers: all in the same grid cell, then nudged sideways and tilted */
+.fan {
+  display: grid;
+  place-items: center;
+}
+
+.fan .book {
+  grid-area: 1 / 1;
+  width: 48%;
+}
+
+.fan .book:nth-child(1) { transform: translateX(-52%) rotate(-7deg) scale(0.9); }
+.fan .book:nth-child(2) { transform: translateX(52%) rotate(7deg) scale(0.9); }
+.fan .book:nth-child(3) { z-index: 1; }
+
+.fan-single .book {
+  width: 58%;
+  transform: rotate(3deg);
+}
+
+.carousel-controls {
+  position: absolute;
+  right: var(--space-m);
+  bottom: var(--space-m);
+  display: flex;
+  gap: var(--space-xs);
+}
+
+.carousel-btn {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: var(--paper);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.carousel-btn:hover {
+  background: var(--sun);
+}
+
+.hero-tiles {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: var(--space-s);
+}
+
+
+/* ---------- 9. Photo tiles (hero and categories) ---------- */
+.tile {
+  position: relative;
+  display: block;
+  min-height: 12rem;
+  overflow: hidden;
+  border-radius: var(--radius-l);
+  background: var(--mist);
+  color: var(--paper);
+  text-decoration: none;
+}
+
+.tile img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.tile:hover img {
+  transform: scale(1.04);
+}
+
+/* Dark fade at the bottom so the white text is readable on any photo */
+.tile-text {
+  position: absolute;
+  inset: auto 0 0 0;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-l) var(--space-m) var(--space-m);
+  background: linear-gradient(to top, rgb(0 0 0 / 0.75), transparent);
+}
+
+.tile-title {
+  font-family: var(--font-display);
+  font-size: 1.625rem;
+  line-height: 1.1;
+}
+
+.tile-kicker {
+  font-weight: 700;
+  font-size: 0.9375rem;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-s);
+}
+
+/* aspect-ratio sets the height here, so drop the min-height
+   (with aspect-ratio a min-height would also force a min-width) */
+.category-grid .tile {
+  min-height: 0;
+  aspect-ratio: 4 / 5;
+}
+
+
+/* ---------- 10. Sofia's picks: portrait + covers with handwritten shelf talkers ---------- */
+.picks {
+  display: grid;
+  grid-template-columns: 1fr 2.4fr;
+  align-items: center;
+  gap: var(--space-xl);
+}
+
+.portrait {
+  width: 9rem;
+  aspect-ratio: 1;
+  margin-bottom: var(--space-m);
+  border: 4px solid var(--paper);
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 8px 20px -10px rgb(0 0 0 / 0.5);
+}
+
+.picks-intro p {
+  max-width: 34ch;
+}
+
+.picks-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-l);
+}
+
+.pick .book {
+  width: 72%;
+}
+
+/* A shelf talker: the little handwritten card shops tape under a book */
+.shelf-talker {
+  position: relative;
+  margin: var(--space-m) 0 0;
+  padding: var(--space-s) var(--space-s) var(--space-s) 1.25rem;
+  border-radius: 4px;
+  background: var(--paper);
+  box-shadow: 0 6px 14px -8px rgb(0 0 0 / 0.35);
+  font-family: var(--font-hand);
+  font-size: 1.125rem;
+  line-height: 1.35;
+  transform: rotate(-1.5deg);
+}
+
+.pick:nth-child(2) .shelf-talker {
+  transform: rotate(1.5deg);
+}
+
+/* Strip of pink tape holding the card up */
+.shelf-talker::before {
+  content: "";
+  position: absolute;
+  top: -0.6rem;
+  left: 40%;
+  width: 4rem;
+  height: 1.1rem;
+  background: rgb(255 143 177 / 0.75);
+  transform: rotate(-3deg);
+}
+
+
+/* ---------- 11. Events: cards with photo, date, title ---------- */
+.event-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-m);
+}
+
+.event-card img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  margin-bottom: var(--space-s);
+  border-radius: var(--radius-m);
+  object-fit: cover;
+}
+
+.event-date {
+  margin-bottom: 0.2rem;
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 0.9375rem;
+}
+
+.event-card h3 {
+  font-size: 1.25rem;
+}
+
+.event-card h3 a {
+  text-decoration: none;
+}
+
+.event-card h3 a:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--sakura);
+}
+
+
+/* ---------- 12. Come say hola: info, photo, live map ---------- */
+.visit {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.3fr;
+  gap: var(--space-m);
+  align-items: stretch;
+}
+
+.visit-info {
+  padding: var(--space-l);
+  border-radius: var(--radius-l);
+  background: var(--mist);
+}
+
+address {
+  margin-bottom: var(--space-m);
+  font-style: normal;
+  font-size: 1.125rem;
+}
+
+.hours {
+  width: 100%;
+  margin-bottom: var(--space-l);
+  border-collapse: collapse;
+}
+
+.hours th,
+.hours td {
+  padding-block: 0.55rem;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+
+.hours td {
+  text-align: right;
+}
+
+.visit-photo,
+.visit-map {
+  width: 100%;
+  height: 100%;
+  min-height: 22rem;
+  border: 0;
+  border-radius: var(--radius-l);
+  object-fit: cover;
+}
+
+
+/* ---------- 13. Newsletter, footer and the basket message ---------- */
+.site-footer {
+  margin-top: var(--space-2xl);
+}
+
+.newsletter {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: var(--space-l);
+}
+
+.newsletter p {
+  margin: 0;
+  color: var(--tone);
+}
+
+.signup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.signup input {
+  flex: 1;
+  min-width: 12rem;
+  padding: 0.75rem 1.25rem;
+  border: 2px solid var(--paper);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.newsletter .signup-thanks {
+  width: 100%;
+  color: var(--sun);
+  font-weight: 700;
+}
+
+.footer-main {
+  display: grid;
+  grid-template-columns: 2fr repeat(3, 1fr);
+  gap: var(--space-l);
+  padding-block: var(--space-xl) var(--space-l);
+}
+
+.footer-brand p:last-child {
+  max-width: 30ch;
+  margin-top: var(--space-s);
+  color: var(--muted);
+}
+
+.footer-col h2 {
+  margin-bottom: var(--space-s);
+  font-family: var(--font-body);
+  font-weight: 900;
+  font-size: 1rem;
+}
+
+.footer-col li + li {
+  margin-top: 0.4rem;
+}
+
+.footer-col a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.footer-col a:hover {
+  color: var(--ink);
+  text-decoration: underline;
+}
+
+.footer-bottom {
+  padding-block: var(--space-m);
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.footer-bottom p {
+  margin: 0;
+}
+
+/* "Added to basket" message, created by main.js, slides up from the bottom */
+.toast {
+  position: fixed;
+  bottom: var(--space-m);
+  left: 50%;
+  z-index: 30;
+  padding: 0.8rem 1.4rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: 700;
+  box-shadow: 0 10px 24px -10px rgb(0 0 0 / 0.6);
+  transform: translate(-50%, calc(100% + 3rem)); /* parked just below the screen */
+  transition: transform 0.25s ease;
+}
+
+.toast.is-visible {
+  transform: translate(-50%, 0);
+}
+
+
+/* ---------- 14. New on the shelf: an interactive bookshelf (homepage) ---------- */
+.shelf-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 21rem;
+  align-items: end;
+  gap: var(--space-l);
+}
+
+/* The shelf scrolls sideways when it runs out of room. The top padding leaves space for a lifted book. */
+.shelf-scroll {
+  position: relative;
+  overflow-x: auto;
+  padding-top: var(--space-l);
+}
+
+.shelf {
+  display: flex;
+  align-items: flex-end; /* books stand on the plank */
+  gap: 3px;
+  width: max-content;
+  padding: 0 var(--space-s);
+  border-bottom: 14px solid var(--ink); /* the plank */
+}
+
+/* Bookend at the end of the shelf */
+.shelf::after {
+  content: "";
+  width: 0.6rem;
+  height: 8rem;
+  margin-left: var(--space-xs);
+  border-radius: 3px 3px 0 0;
+  background: var(--ink);
+}
+
+/* A spine: a link with sideways text. Each one sets its own colour and size
+   in its style attribute (--spine, --spine-text, --h, --w). */
+.spine {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: var(--w, 2.6rem);
+  height: var(--h, 14rem);
+  padding: 3px 0 0.6rem;
+  writing-mode: vertical-rl; /* text runs top to bottom, like a real spine */
+  border-radius: 3px 3px 0 0;
+  background: var(--spine);
+  color: var(--spine-text);
+  font-weight: 700;
+  font-size: 0.875rem;
+  text-decoration: none;
+  /* dark and light edges make it look rounded */
+  box-shadow: inset -4px 0 0 rgb(0 0 0 / 0.18), inset 3px 0 0 rgb(255 255 255 / 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+/* Spine art: a small crop of the book's own cover, like the little
+   picture at the top of a real manga spine */
+.spine img {
+  flex: none;
+  width: calc(100% - 6px);
+  height: 3rem;
+  object-fit: cover;
+  object-position: 50% 45%;
+  border-radius: 2px;
+}
+
+/* Volume number: pushed to the bottom, digits kept upright */
+.spine span {
+  margin-top: auto;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1rem;
+  text-combine-upright: all;
+}
+
+/* Publisher mark at the foot of the spine */
+.spine small {
+  padding-top: 0.3rem;
+  border-top: 1px solid;
+  writing-mode: horizontal-tb;
+  font-size: 0.5625rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+}
+
+/* A book facing out, with a yellow price sticker */
+.shelf-cover {
+  position: relative;
+  display: block;
+  width: 9rem;
+  margin-inline: 0.4rem;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.shelf-cover img {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 3px 6px 0 0;
+  box-shadow: var(--book-shadow);
+  transition: box-shadow 0.2s ease;
+}
+
+.price-sticker {
+  position: absolute;
+  top: -0.9rem;
+  right: -0.9rem;
+  display: grid;
+  place-items: center;
+  width: 3.9rem;
+  height: 3.9rem;
+  border-radius: 50%;
+  background: var(--sun);
+  box-shadow: 0 4px 10px -4px rgb(0 0 0 / 0.45);
+  font-weight: 900;
+  font-size: 0.875rem;
+  transform: rotate(8deg);
+}
+
+/* The highlighted book (main.js adds .is-active on hover and keyboard focus):
+   pulled up off the shelf with a pink glow */
+.spine.is-active,
+.shelf-cover.is-active {
+  transform: translateY(-1.25rem);
+}
+
+.spine.is-active {
+  box-shadow: inset -4px 0 0 rgb(0 0 0 / 0.18), 0 0 0 3px var(--sakura), 0 14px 22px -6px rgb(255 143 177 / 0.9);
+}
+
+.shelf-cover.is-active img {
+  box-shadow: 0 0 0 3px var(--sakura), 0 18px 28px -8px rgb(255 143 177 / 0.9);
+}
+
+/* While the mouse is on the shelf, the other books fade back a little */
+.shelf:hover .spine:not(.is-active),
+.shelf:hover .shelf-cover:not(.is-active) {
+  opacity: 0.55;
+}
+
+/* Preview card: shows the highlighted book */
+.shelf-preview {
+  display: grid;
+  grid-template-columns: 8rem 1fr;
+  align-items: end;
+  gap: var(--space-m);
+  padding: var(--space-m);
+  border-radius: var(--radius-l);
+  background: var(--blush);
+}
+
+/* The title and author always take up the same space (3 lines and 2 lines),
+   so the card never changes height and the shelf never jumps */
+.shelf-preview h3 {
+  min-height: 3.45em; /* 3 lines x line-height 1.15 */
+  margin-top: var(--space-xs);
+}
+
+.shelf-preview .product-author {
+  min-height: 3.1em; /* 2 lines x line-height 1.55 */
+}
+
+.shelf-preview .btn {
+  width: 100%;
+  justify-content: center;
+  margin-top: var(--space-xs);
+  padding-inline: 0.75rem;
+  white-space: nowrap;
+}
+
+
+/* ---------- 15. Dark mode ---------- */
+/* settings.js puts data-theme="dark" on <html>. The rest of this file only
+   uses the colour tokens, so swapping them here repaints the whole site. */
+:root[data-theme="dark"] {
+  color-scheme: dark; /* dark scrollbars and form controls too */
+  --ink: #f2f2f2;
+  --paper: #121212;
+  --blush: #2a1a21;
+  --mist: #1f1f1f;
+  --line: #333333;
+  --muted: #b3b3b3;
+  --book-shadow: 0 1px 2px rgb(0 0 0 / 0.5), 0 14px 22px -12px rgb(0 0 0 / 0.9);
+}
+
+/* A few things keep their light-mode colours: the black bands stay black,
+   and text over photos stays white... */
+:root[data-theme="dark"] .promo-bar,
+:root[data-theme="dark"] .band-ink,
+:root[data-theme="dark"] .slide-ink,
+:root[data-theme="dark"] .tile {
+  --ink: #000000;
+  --paper: #ffffff;
+}
+
+/* ...and anything yellow or pink keeps black text */
+:root[data-theme="dark"] .skip-link,
+:root[data-theme="dark"] .logo-mark,
+:root[data-theme="dark"] .search-btn,
+:root[data-theme="dark"] .basket-count,
+:root[data-theme="dark"] .theme-toggle:hover,
+:root[data-theme="dark"] .btn:hover,
+:root[data-theme="dark"] .btn-light:hover,
+:root[data-theme="dark"] .btn-sakura,
+:root[data-theme="dark"] .badge-sun,
+:root[data-theme="dark"] .badge-sakura,
+:root[data-theme="dark"] .rank,
+:root[data-theme="dark"] .slide-sun,
+:root[data-theme="dark"] .carousel-btn:hover,
+:root[data-theme="dark"] .price-sticker,
+:root[data-theme="dark"] .qty-btn:hover {
+  --ink: #000000;
+  --paper: #ffffff;
+  color: #000000;
+}
+
+
+/* ==========================================================
+   PAGE STYLES (manga, product, events, basket) go below this line
+   ========================================================== */
+
+/* ---------- Shared: page intro + breadcrumb ---------- */
+.page-head {
+  padding-top: var(--space-l);
+  margin-bottom: var(--space-m);
+}
+
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: var(--space-s);
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.breadcrumb li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* A plain slash between crumbs, no arrows or middle dots */
+.breadcrumb li + li::before {
+  content: "/";
+  color: var(--line);
+}
+
+.breadcrumb a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--sakura);
+}
+
+.breadcrumb [aria-current="page"] {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.result-count {
+  margin: 0;
+  color: var(--muted);
+}
+
+
+/* ---------- Category page: filters sidebar ---------- */
+.category-layout {
+  display: grid;
+  grid-template-columns: 15rem 1fr;
+  align-items: start;
+  gap: var(--space-l);
+  margin-bottom: var(--space-2xl);
+}
+
+/* .category-layout is a grid, so the hidden attribute needs help to actually hide it */
+.category-layout[hidden] {
+  display: none;
+}
+
+.filters {
+  padding: var(--space-m);
+  border-radius: var(--radius-l);
+  background: var(--mist);
+}
+
+.filters fieldset {
+  margin: 0 0 var(--space-m);
+  padding: 0;
+  border: 0;
+}
+
+.filters legend {
+  margin-bottom: var(--space-xs);
+  padding: 0;
+  font-weight: 900;
+}
+
+.filter-choice {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-block: 0.3rem;
+}
+
+.filter-choice input {
+  accent-color: var(--ink);
+}
+
+.price-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.price-field input[type="range"] {
+  width: 100%;
+  accent-color: var(--ink);
+}
+
+.price-field output {
+  font-weight: 700;
+}
+
+.filters-clear {
+  width: 100%;
+  justify-content: center;
+}
+
+
+/* ---------- Category page: product grid + empty state ---------- */
+.sort-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: var(--space-m);
+}
+
+.sort-row select {
+  padding: 0.5rem 0.9rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--paper);
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  gap: var(--space-l) var(--space-m);
+}
+
+/* .product is display:flex, so it needs the same [hidden] fix as above */
+.product[hidden] {
+  display: none;
+}
+
+.empty-state {
+  padding: var(--space-l);
+  text-align: center;
+  color: var(--muted);
+}
+
+
+/* ---------- Product page: hero, stock line, specs, accordion ---------- */
+.product-hero {
+  display: grid;
+  grid-template-columns: 22rem 1fr;
+  gap: var(--space-xl);
+  margin-bottom: var(--space-2xl);
+}
+
+.product-authors {
+  margin-bottom: var(--space-s);
+  color: var(--muted);
+}
+
+.price-large {
+  margin-bottom: var(--space-s);
+  font-weight: 900;
+  font-size: 1.75rem;
+}
+
+.stock-line {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: var(--space-m);
+  font-weight: 700;
+}
+
+/* A small dot standing in for "in stock", using the sun token, not a new colour */
+.stock-dot {
+  width: 0.6rem;
+  height: 0.6rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--sun);
+}
+
+.qty-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: var(--space-m);
+}
+
+.qty-row input {
+  width: 4.5rem;
+  padding: 0.5rem;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-s);
+  text-align: center;
+}
+
+.product-description {
+  max-width: 60ch;
+  margin-top: var(--space-m);
+}
+
+/* Keep Sofia's note card-sized, a tilted full-width strip looks crooked */
+.product-hero .shelf-talker {
+  max-width: 30rem;
+}
+
+.spec-list {
+  display: grid;
+  grid-template-columns: 9rem 1fr;
+  gap: 0.4rem var(--space-m);
+  margin-block: var(--space-m);
+  padding-block: var(--space-m);
+  border-block: 1px solid var(--line);
+}
+
+.spec-list dt {
+  font-weight: 700;
+}
+
+.spec-list dd {
+  margin: 0;
+  color: var(--muted);
+}
+
+.shelf-talker-label {
+  margin: 0 0 0.3rem;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+
+.accordion-group {
+  margin-block: var(--space-m);
+  border-top: 1px solid var(--line);
+}
+
+.accordion {
+  padding-block: var(--space-s);
+  border-bottom: 1px solid var(--line);
+}
+
+.accordion summary {
+  padding-block: 0.5rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.accordion[open] summary {
+  margin-bottom: 0.5rem;
+}
+
+.accordion p {
+  margin: 0;
+  color: var(--muted);
+}
+
+
+/* ---------- Events page: featured event + event list ---------- */
+.event-featured {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  align-items: center;
+  gap: var(--space-l);
+  margin-bottom: var(--space-2xl);
+}
+
+.event-featured img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-l);
+  object-fit: cover;
+}
+
+.event-featured h2 {
+  margin-bottom: 0.3rem;
+}
+
+.event-list {
+  margin-bottom: var(--space-2xl);
+}
+
+.event-row {
+  display: grid;
+  grid-template-columns: 5rem 11rem 1fr;
+  align-items: center;
+  gap: var(--space-m);
+  padding-block: var(--space-m);
+  border-top: 1px solid var(--line);
+}
+
+.event-list li:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.event-day-block {
+  text-align: center;
+}
+
+.event-day-num {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+.event-day-month {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.event-row img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-m);
+  object-fit: cover;
+}
+
+.event-row h2 {
+  margin-bottom: 0.2rem;
+  font-size: 1.375rem;
+}
+
+
+/* ---------- Basket page: item rows + order summary ---------- */
+.basket-layout {
+  display: grid;
+  grid-template-columns: 1fr 20rem;
+  align-items: start;
+  gap: var(--space-l);
+  margin-bottom: var(--space-2xl);
+}
+
+/* .basket-layout is a grid, so it needs the same [hidden] fix as .category-layout */
+.basket-layout[hidden] {
+  display: none;
+}
+
+.basket-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.basket-row {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr auto;
+  align-items: center;
+  gap: var(--space-m);
+  padding-block: var(--space-s);
+  border-bottom: 1px solid var(--line);
+}
+
+.basket-row .book {
+  width: 100%;
+}
+
+.basket-row-title {
+  margin: 0 0 0.2rem;
+  font-weight: 700;
+}
+
+.basket-row-price {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+.basket-remove {
+  margin-top: 0.3rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--sakura);
+  cursor: pointer;
+}
+
+.basket-remove:hover {
+  color: var(--ink);
+}
+
+.basket-row-qty {
+  text-align: right;
+}
+
+.qty-control {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.qty-btn {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: var(--paper);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.qty-btn:hover {
+  background: var(--sun);
+}
+
+.basket-row-total {
+  margin: 0.3rem 0 0;
+  font-weight: 900;
+}
+
+.order-summary {
+  padding: var(--space-l);
+  border-radius: var(--radius-l);
+  background: var(--mist);
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-s);
+  margin: 0;
+  padding-block: 0.4rem;
+}
+
+.summary-total {
+  margin-top: 0.4rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--line);
+  font-weight: 900;
+  font-size: 1.125rem;
+}
+
+.order-summary .btn {
+  width: 100%;
+  justify-content: center;
+  margin-block: var(--space-m) var(--space-xs);
+}
+
+.summary-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.basket-empty {
+  padding-block: var(--space-l) var(--space-2xl);
+  text-align: center;
+}
+
+.basket-empty > .btn {
+  margin-top: var(--space-xs);
+}
+
+/* The "Popular right now" row inside the empty state reads like a normal shelf again */
+.basket-empty .section {
+  text-align: left;
+}
+
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+
+/* ---------- Tablet: 960px and narrower ---------- */
+@media (max-width: 60rem) {
+  .header-main {
+    flex-wrap: wrap;
+  }
+
+  .logo {
+    margin-right: auto;
+  }
+
+  /* Search drops onto its own full-width row */
+  .search {
+    order: 5;
+    flex-basis: 100%;
+    max-width: none;
+  }
+
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero-tiles {
+    grid-template-rows: none;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .hero-tiles .tile {
+    aspect-ratio: 4 / 3;
+  }
+
+  /* Rows show about three and a half books, so it's clear they scroll */
+  .product-row,
+  .product-row-5,
+  .product-row-4 {
+    --columns: 3.4;
+  }
+
+  .category-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* Shelf: preview card moves under the shelf */
+  .shelf-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .shelf-preview {
+    max-width: 28rem;
+  }
+
+  .category-grid .tile {
+    aspect-ratio: 4 / 3;
+  }
+
+  .picks {
+    grid-template-columns: 1fr;
+    gap: var(--space-l);
+  }
+
+  .event-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .visit {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .visit-map {
+    grid-column: span 2;
+  }
+
+  .newsletter {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-main {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .footer-brand {
+    grid-column: span 3;
+  }
+
+  /* Pages */
+  .category-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .product-hero {
+    grid-template-columns: 1fr;
+    gap: var(--space-m);
+  }
+
+  .event-featured {
+    grid-template-columns: 1fr;
+  }
+
+  .event-row {
+    grid-template-columns: 4rem 8rem 1fr;
+  }
+
+  .basket-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Mobile: 600px and narrower ---------- */
+@media (max-width: 37.5rem) {
+  .promo-hours {
+    display: none;
+  }
+
+  .header-main {
+    gap: var(--space-s);
+    padding-block: var(--space-s);
+  }
+
+  .logo {
+    font-size: 1.3rem;
+  }
+
+  .logo-mark {
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: 1.05rem;
+  }
+
+  /* "Find us" is in the menu's footer links on phones, so hide it here */
+  .header-link:not(.basket-link) {
+    display: none;
+  }
+
+  .menu-toggle {
+    display: inline-flex;
+  }
+
+  /* The nav is hidden until main.js adds the class "is-open" */
+  .site-nav {
+    display: none;
+  }
+
+  .site-nav.is-open {
+    display: block;
+  }
+
+  .nav-list {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .nav-list a {
+    border-top: 1px solid var(--line);
+  }
+
+  .slide {
+    grid-template-columns: 1fr;
+    min-height: 0;
+    padding: var(--space-l) var(--space-m) 5rem;
+  }
+
+  .fan {
+    order: -1; /* books above the text */
+    width: 80%;
+    margin-inline: auto;
+  }
+
+  .hero-tiles {
+    grid-template-columns: 1fr;
+  }
+
+  .product-row,
+  .product-row-5,
+  .product-row-4 {
+    --columns: 2.2;
+  }
+
+  .category-grid {
+    gap: var(--space-xs);
+  }
+
+  .category-grid .tile {
+    aspect-ratio: 1;
+  }
+
+  .tile-title {
+    font-size: 1.25rem;
+  }
+
+  .picks-list {
+    grid-template-columns: 1fr;
+  }
+
+  .shelf-preview {
+    grid-template-columns: 6rem 1fr;
+  }
+
+  /* Each pick becomes a row: small book on the left, note on the right */
+  .pick {
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+    align-items: start;
+    gap: var(--space-s);
+  }
+
+  .pick .book {
+    width: 100%;
+  }
+
+  .pick .shelf-talker {
+    margin-top: 0;
+  }
+
+  .event-grid,
+  .visit {
+    grid-template-columns: 1fr;
+  }
+
+  .visit-map {
+    grid-column: auto;
+  }
+
+  .footer-main {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .footer-brand {
+    grid-column: span 2;
+  }
+
+  /* Pages */
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+    gap: var(--space-m) var(--space-s);
+  }
+
+  .spec-list {
+    grid-template-columns: 7rem 1fr;
+  }
+
+  .event-row {
+    grid-template-columns: 3.5rem 1fr;
+  }
+
+  .event-day-block {
+    grid-row: 1 / 3;
+  }
+
+  .event-row img,
+  .event-row-body {
+    grid-column: 2;
+  }
+
+  .basket-row {
+    grid-template-columns: 3.5rem 1fr;
+    row-gap: 0.3rem;
+  }
+
+  .basket-row .book {
+    grid-row: 1 / 3;
+  }
+
+  .basket-row-qty {
+    grid-column: 2;
+    text-align: left;
+  }
+
+  .qty-control {
+    justify-content: flex-start;
+  }
+}
+
+/* ---------- Reduced motion: no lifting, sliding or zooming ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .book,
+  .tile img,
+  .toast,
+  .spine,
+  .shelf-cover {
+    transition: none;
+  }
+
+  .slides {
+    scroll-behavior: auto;
+  }
+
+  .product-link:hover .book,
+  .product-link:focus-visible .book,
+  .tile:hover img {
+    transform: none;
+  }
+
+  .js-add.is-added,
+  .basket-count.is-bumped {
+    animation: none;
+  }
+}

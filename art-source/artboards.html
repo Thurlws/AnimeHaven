@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Anime Haven art boards</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Kalam:wght@700&family=Zen+Maru+Gothic:wght@700;900&display=swap">
+<style>
+  :root { --ink:#000; --paper:#fff; --sakura:#ff8fb1; --berry:#d93a73; --sun:#ffe45c; --tone:#cfcfcf; --blush:#ffeef3; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #000; }
+  .board { display: none; position: relative; overflow: hidden; }
+  .board:target { display: block; }
+  .w43 { width: 800px; height: 600px; }
+  .w45 { width: 800px; height: 1000px; }
+  .w11 { width: 600px; height: 600px; }
+  .abs { position: absolute; }
+  img { display: block; }
+  .cv { position: absolute; overflow: hidden; border-radius: 3px 6px 6px 3px;
+        box-shadow: 0 2px 3px rgba(0,0,0,.25), 0 22px 30px -14px rgba(0,0,0,.65); }
+  .cv img { width: 100%; height: 100%; object-fit: cover; }
+  .cv::after { content: ""; position: absolute; inset: 0;
+    background: linear-gradient(90deg, rgba(0,0,0,.28), rgba(255,255,255,.3) 1.5%, transparent 4%, rgba(0,0,0,.1) 5%, transparent 7%); }
+
+  /* ---------- watch night ---------- */
+  #watch-night { background: radial-gradient(ellipse at 50% 30%, #4a2536 0%, #1a0d14 55%, #0b0508 100%); }
+  #watch-night .wire { left: -20px; right: -20px; top: -140px; height: 200px; border-bottom: 2px solid rgba(255,255,255,.18); border-radius: 0 0 50% 50%; }
+  #watch-night .bulb { width: 10px; height: 10px; border-radius: 50%; background: #fff4c2;
+    box-shadow: 0 0 8px 3px rgba(255,228,92,.8), 0 0 22px 8px rgba(255,228,92,.3); }
+  #watch-night .screen { left: 120px; top: 78px; width: 560px; height: 315px; border: 8px solid #050305; overflow: hidden;
+    box-shadow: 0 0 90px 18px rgba(255,143,177,.35), 0 0 0 2px rgba(255,255,255,.08); }
+  #watch-night .screen img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 32%; filter: saturate(1.15) contrast(1.05); }
+  #watch-night .screen::after { content:""; position:absolute; inset:0; background: linear-gradient(180deg, rgba(255,255,255,.08), transparent 40%); }
+  .p { position: absolute; bottom: 0; width: 130px; height: 175px; transform-origin: bottom center; }
+  .p::before { content:""; position:absolute; left:36px; top:0; width:58px; height:66px; border-radius:50% 50% 46% 46%;
+    background: var(--c); box-shadow: inset 0 4px 0 rgba(255,143,177,.45); }
+  .p::after { content:""; position:absolute; left:0; top:56px; width:130px; height:130px; border-radius:64px 64px 0 0;
+    background: var(--c); box-shadow: inset 0 4px 0 rgba(255,143,177,.3); }
+
+  /* ---------- figures cabinet ---------- */
+  #figures { background: linear-gradient(#ffc7da, #ffeef3 70%); }
+  #figures .led { left: 0; right: 0; top: -6px; height: 12px; background: #fff; box-shadow: 0 0 34px 16px rgba(255,143,177,.9); }
+  #figures .glass { left: -10px; right: -10px; height: 14px; background: linear-gradient(rgba(255,255,255,.95), rgba(255,255,255,.45));
+    box-shadow: 0 14px 22px -8px rgba(120,40,70,.35); }
+  .fbox { position: absolute; border-radius: 8px; background: var(--c);
+    box-shadow: 0 20px 26px -14px rgba(60,10,30,.6), inset 0 0 0 3px rgba(255,255,255,.25); }
+  .fbox .band { position:absolute; left:0; right:0; top:0; height:32px; border-radius:8px 8px 0 0; background:rgba(0,0,0,.18); }
+  .fbox .band::before { content:""; position:absolute; left:14px; top:12px; width:55%; height:8px; border-radius:4px; background:rgba(255,255,255,.85); }
+  .fbox .win { position:absolute; left:12px; right:12px; top:42px; bottom:28px; border-radius:5px; overflow:hidden; background:#fff; }
+  .fbox .win img { width:100%; height:100%; object-fit:cover; object-position:50% 26%; }
+  .fbox .win::after { content:""; position:absolute; inset:0;
+    background: linear-gradient(115deg, rgba(255,255,255,.6) 0 10%, transparent 28%, transparent 72%, rgba(255,255,255,.28) 86%); }
+  .fbox .foot { position:absolute; left:14px; bottom:10px; width:42%; height:7px; border-radius:4px; background:rgba(255,255,255,.75); }
+
+  /* ---------- manga wall ---------- */
+  #cat-manga { background: var(--blush); }
+  #cat-manga .wall { left: -210px; top: -170px; display: grid; grid-template-columns: repeat(5, 200px); gap: 28px; transform: rotate(-9deg); }
+  #cat-manga .wall .cv { position: relative; width: 200px; height: 300px; }
+
+  /* ---------- blu-ray ---------- */
+  #cat-bluray { background:
+      repeating-conic-gradient(from 0deg at 50% 38%, rgba(255,255,255,.06) 0deg 2deg, transparent 2deg 9deg),
+      radial-gradient(ellipse at 50% 38%, #2a1a3a, #07050a 75%); }
+  .case { position:absolute; width:300px; height:392px; border-radius:12px; background:#1f5fc6; padding:42px 12px 12px;
+    box-shadow: 0 34px 44px -20px rgba(0,0,0,.9), inset 0 0 0 2px rgba(255,255,255,.18); }
+  .case::before { content:"Blu-ray"; position:absolute; top:9px; left:0; right:0; text-align:center;
+    font: 900 19px "Zen Maru Gothic", sans-serif; color:#fff; }
+  .case .art { position:relative; width:100%; height:100%; overflow:hidden; border-radius:3px; }
+  .case .art img { width:100%; height:100%; object-fit:cover; object-position:50% 30%; }
+  .case::after { content:""; position:absolute; inset:0; border-radius:12px; background: linear-gradient(120deg, rgba(255,255,255,.28), transparent 32%); }
+
+  /* ---------- merch flat lay ---------- */
+  #cat-merch { background: radial-gradient(rgba(255,143,177,.35) 2px, transparent 2.5px) 0 0 / 18px 18px, var(--blush); }
+  .tote { left: 70px; top: 360px; width: 420px; height: 470px; border-radius: 10px 10px 28px 28px; background: #f4ebdb;
+    box-shadow: 0 30px 40px -22px rgba(90,40,50,.55), inset 0 -10px 0 rgba(0,0,0,.04); }
+  .tote .handle { position:absolute; top:-160px; width:140px; height:180px; border:20px solid #e3d4b9; border-bottom:none; border-radius:90px 90px 0 0; }
+  .tote .mark { position:absolute; left:50%; top:110px; transform:translateX(-50%); width:180px; height:180px; border-radius:50%;
+    background: var(--sakura); display:grid; place-items:center; font: 104px "Dela Gothic One", sans-serif; line-height:1; }
+  .tote .name { position:absolute; left:0; right:0; top:312px; text-align:center; font: 34px "Dela Gothic One", sans-serif; }
+  .pin { position:absolute; width:128px; height:128px; border-radius:50%; overflow:hidden; border:8px solid #e9e9e9;
+    box-shadow: 0 0 0 2px #bdbdbd, 0 14px 18px -8px rgba(80,20,40,.5); }
+  .pin img { width:100%; height:100%; object-fit:cover; object-position:50% 20%; }
+  .pin::after { content:""; position:absolute; inset:0; border-radius:50%; background: linear-gradient(135deg, rgba(255,255,255,.55), transparent 45%); }
+  .sheet { left: 70px; top: 60px; width: 380px; height: 230px; border-radius: 16px; background:#fff; transform: rotate(-6deg);
+    box-shadow: 0 20px 28px -16px rgba(80,20,40,.45); padding: 24px 26px; display:grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .sheet span { width: 70px; height: 70px; border-radius: 50%; overflow:hidden; border: 5px solid #fff; box-shadow: 0 0 0 1px #ddd; }
+  .sheet img { width:100%; height:100%; object-fit:cover; object-position:50% 22%; }
+  .key { width: 140px; height: 190px; border-radius: 20px; border: 7px solid rgba(255,255,255,.85); overflow: visible;
+    box-shadow: 0 18px 22px -12px rgba(80,20,40,.5); }
+  .key .face { width:100%; height:100%; border-radius: 13px; overflow:hidden; }
+  .key .face img { width:100%; height:100%; object-fit:cover; object-position:50% 20%; }
+  .key::before { content:""; position:absolute; left:50%; top:-46px; width:46px; height:46px; margin-left:-23px; border-radius:50%;
+    border:7px solid #b8b8b8; }
+
+  /* ---------- Sofia's signature ---------- */
+  #sofia { background: radial-gradient(rgba(217,58,115,.28) 2.5px, transparent 3px) 0 0 / 20px 20px, var(--sakura); display:none; }
+  #sofia:target { display: grid; place-items: center; }
+  #sofia .sig { font: 700 170px "Kalam", cursive; transform: rotate(-8deg); line-height: 1; }
+  #sofia .sig small { font-size: 90px; }
+
+  /* ---------- shop wall ---------- */
+  #shop { background: radial-gradient(ellipse at 50% 0%, rgba(255,190,140,.22), transparent 55%), linear-gradient(#2c1e26, #170f13); }
+  #shop .neon { left:0; right:0; top: 26px; text-align:center; color:#ffe6ee; font: 190px "Dela Gothic One", sans-serif; line-height:1;
+    text-shadow: 0 0 6px #fff, 0 0 16px #ff8fb1, 0 0 38px #ff8fb1, 0 0 80px #d93a73, 0 0 120px #d93a73; }
+  #shop .neon2 { left:0; right:0; top: 214px; text-align:center; color:#fff3c9; font: 700 58px "Kalam", cursive;
+    text-shadow: 0 0 6px #fff, 0 0 16px #ffe45c, 0 0 36px #ffb300; }
+  .plank { position:absolute; left:-10px; right:-10px; height:20px; background: linear-gradient(#9a6d50, #5e3f2e);
+    box-shadow: 0 16px 22px -8px rgba(0,0,0,.7); }
+  .row { position:absolute; left: 30px; right: 30px; display:flex; align-items:flex-end; gap: 4px; }
+  .sp { flex: none; border-radius: 3px 3px 0 0; box-shadow: inset -4px 0 0 rgba(0,0,0,.18), inset 3px 0 0 rgba(255,255,255,.18); position: relative; }
+  .sp::before { content:""; position:absolute; left:0; right:0; top:14px; height:7px; background: rgba(0,0,0,.28); }
+  .sp::after { content:""; position:absolute; left:28%; right:28%; top:34px; bottom:40px; border-radius:3px; background: rgba(255,255,255,.35); }
+  .row .cv { position: relative; flex: none; }
+
+  /* ---------- drawing club ---------- */
+  #drawing-club { background: repeating-linear-gradient(7deg, rgba(120,70,30,.07) 0 2px, transparent 2px 24px), linear-gradient(135deg, #ecd3ab, #d8b484); }
+  .paper { background:#fff; border-radius:4px; box-shadow: 0 24px 30px -18px rgba(80,40,10,.6); }
+  .book2 { left: 110px; top: 110px; width: 540px; height: 350px; transform: rotate(-5deg); border-radius: 6px;
+    background: linear-gradient(90deg, #fff 49.6%, #e6e6e6 50%, #fff 50.4%); box-shadow: 0 26px 34px -18px rgba(80,40,10,.65); }
+  .spiral { left: 20px; right: 20px; top: -12px; height: 24px; background: radial-gradient(circle, transparent 5px, #555 5.5px 8px, transparent 8.5px) 0 0 / 26px 24px repeat-x; }
+  .tape { position:absolute; width: 90px; height: 26px; background: rgba(255,143,177,.6); }
+  .pencil { position:absolute; height:18px; border-radius: 3px;
+    background: linear-gradient(90deg, var(--sakura) 0 26px, #c7c7c7 26px 40px, var(--c) 40px calc(100% - 46px), #f3d7ab calc(100% - 46px));
+    clip-path: polygon(0 0, calc(100% - 46px) 0, 100% 50%, calc(100% - 46px) 100%, 0 100%);
+    box-shadow: 0 8px 10px -6px rgba(0,0,0,.4); }
+  .pencil::after { content:""; position:absolute; right:0; top:6px; width:14px; height:6px; background:#333; clip-path: polygon(0 0, 100% 50%, 0 100%); }
+  .mug { width: 140px; height: 140px; border-radius: 50%; background: radial-gradient(circle, #7b4a2c 0 52%, #fff 53% 66%, #ececec 67%);
+    box-shadow: 0 18px 22px -10px rgba(80,40,10,.6); }
+  .mug::after { content:""; position:absolute; right:-40px; top:40px; width:48px; height:60px; border:13px solid #f5f5f5; border-left:none; border-radius:0 32px 32px 0; }
+  .eraser { width: 80px; height: 36px; border-radius: 6px; background: linear-gradient(90deg, #fff 0 55%, var(--sakura) 55%); box-shadow: 0 8px 10px -6px rgba(0,0,0,.4); }
+
+  /* ---------- cosplay stage ---------- */
+  #cosplay { background: linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,0) 45%), repeating-linear-gradient(90deg, #6a1a3c 0 24px, #862a52 24px 40px, #6a1a3c 40px 58px); }
+  #cosplay .floor { left:0; right:0; bottom:0; height:150px; background: linear-gradient(#5a3a2a, #26170f); border-top: 8px solid #7a5040; }
+  .spot { position:absolute; top:-30px; width:300px; height:520px; background: linear-gradient(rgba(255,244,190,.6), rgba(255,244,190,.06));
+    clip-path: polygon(44% 0, 56% 0, 100% 100%, 0 100%); }
+  .rosette { position:absolute; width:62px; height:62px; border-radius:50%; background: var(--sun); display:grid; place-items:center;
+    font: 26px "Dela Gothic One", sans-serif; box-shadow: 0 0 0 5px #fff, 0 10px 14px -6px rgba(0,0,0,.6); z-index: 2; }
+  .rosette::before, .rosette::after { content:""; position:absolute; top:48px; width:18px; height:42px; background: var(--sakura); z-index:-1; }
+  .rosette::before { left:12px; transform: rotate(14deg); }
+  .rosette::after { right:12px; transform: rotate(-14deg); }
+  .pumpkin { position:absolute; width:78px; height:60px; border-radius:50%;
+    background: repeating-linear-gradient(90deg, rgba(0,0,0,.12) 0 3px, transparent 3px 18px), radial-gradient(circle at 38% 35%, #ffb45e, #ef7a18 62%, #b95208);
+    box-shadow: 0 10px 12px -6px rgba(0,0,0,.6); }
+  .pumpkin::before { content:""; position:absolute; left:34px; top:-12px; width:10px; height:16px; border-radius:3px; background:#3f6b2e; }
+  .confetti { position:absolute; width:10px; height:16px; border-radius:2px; }
+
+  /* ---------- swap meet ---------- */
+  #swap-meet { background: repeating-linear-gradient(-4deg, rgba(120,70,30,.06) 0 2px, transparent 2px 26px), linear-gradient(160deg, #e4c89c, #cfa97a); }
+  .sign { left: 470px; top: 380px; width: 290px; height: 170px; transform: rotate(-7deg); border-radius: 5px;
+    background: linear-gradient(135deg, #cf9f66, #b88550); box-shadow: 0 22px 26px -14px rgba(60,30,5,.7), inset 0 0 0 4px rgba(0,0,0,.08);
+    display:grid; place-items:center; text-align:center; font: 700 50px "Kalam", cursive; line-height: 1; padding-top: 10px; }
+  .sign::before { content:""; position:absolute; top:14px; left:50%; width:14px; height:14px; margin-left:-7px; border-radius:50%; background:#6a4523; }
+</style>
+</head>
+<body>
+
+<section id="watch-night" class="board w43">
+  <div class="abs wire"></div>
+  <div class="abs screen"><img src="http://localhost:5173/images/covers/frieren-01.jpg" alt=""></div>
+  <div class="crowd"></div>
+</section>
+
+<section id="figures" class="board w43"><div class="abs led"></div></section>
+<section id="cat-manga" class="board w45"><div class="abs wall"></div></section>
+<section id="cat-bluray" class="board w45"></section>
+
+<section id="cat-merch" class="board w45">
+  <div class="abs sheet"></div>
+  <div class="abs tote">
+    <div class="handle" style="left:62px"></div><div class="handle" style="right:62px"></div>
+    <div class="mark">安</div><div class="name">Anime Haven</div>
+  </div>
+</section>
+
+<section id="sofia" class="board w11"><div class="sig">Sofia <small>x</small></div></section>
+
+<section id="shop" class="board w45">
+  <div class="abs neon">安</div>
+  <div class="abs neon2">Anime Haven</div>
+</section>
+
+<section id="drawing-club" class="board w43">
+  <div class="abs paper" style="left:560px; top:-60px; width:280px; height:340px; transform:rotate(9deg)"></div>
+  <div class="abs book2"><div class="abs spiral"></div><svg class="abs" style="left:300px; top:60px" width="210" height="240" viewBox="0 0 210 240" fill="none" stroke="#7a7a7a" stroke-width="2.2" stroke-linecap="round">
+    <path d="M60 220c-10-40-12-80 0-110 8-20 30-26 48-20 22 8 30 30 28 56-2 30-10 52-20 74"/>
+    <path d="M70 112c-6-30-4-62 6-80 6-10 18-8 20 4 3 20 0 50-2 72"/>
+    <path d="M96 104c0-34 4-66 16-84 7-9 18-5 18 7 0 24-6 56-10 80"/>
+    <path d="M122 112c4-28 12-54 24-66 8-7 17-1 15 9-4 22-14 48-22 66"/>
+    <path d="M138 146c10-14 26-26 40-28 10-1 13 9 6 16-14 14-30 30-40 44"/>
+    <path d="M40 60l30 10M150 30l20-12M30 150l-14 8" stroke="#b0b0b0"/>
+  </svg></div>
+  <div class="abs mug" style="left:620px; top:390px"></div>
+  <div class="abs eraser" style="left:70px; top:490px; transform:rotate(14deg)"></div>
+  <div class="pencil" style="--c:var(--sun); left:250px; top:520px; width:330px; transform:rotate(-8deg)"></div>
+  <div class="pencil" style="--c:#6fb3ff; left:-60px; top:80px; width:300px; transform:rotate(28deg)"></div>
+</section>
+
+<section id="cosplay" class="board w43">
+  <div class="abs floor"></div>
+</section>
+
+<section id="swap-meet" class="board w43">
+  <div class="abs sign">Swap 1<br>for 1!</div>
+</section>
+
+<script>
+  // Helpers to build the boards (this file only makes images, it's not part of the site)
+  const C = n => 'http://localhost:5173/images/covers/' + n + '.jpg';
+  const el = (parent, html) => { parent.insertAdjacentHTML('beforeend', html); return parent.lastElementChild; };
+  const cover = (parent, name, x, y, w, rot, extra = '') =>
+    el(parent, `<div class="cv" style="left:${x}px; top:${y}px; width:${w}px; height:${Math.round(w * 1.5)}px; transform:rotate(${rot}deg); ${extra}"><img src="${C(name)}" alt=""></div>`);
+  const all = ['frieren-01','chainsaw-man-01','spy-x-family-01','jujutsu-kaisen-01','one-piece-01','dandadan-01','oshi-no-ko-01',
+    'witch-hat-atelier-01','delicious-in-dungeon-01','sakamoto-days-01','look-back','haikyuu-01','summer-hikaru-died-01',
+    'berserk-deluxe-01','vagabond-01','apothecary-diaries-01','blue-period-01','frieren-02','chainsaw-man-02','spy-x-family-02',
+    'jujutsu-kaisen-02','frieren-03','frieren-04'];
+
+  // watch night: bulbs along the wire and two rows of people
+  const wn = document.getElementById('watch-night');
+  for (let i = 0; i < 17; i++) {
+    const x = i * 50; const y = 58 - Math.round(38 * Math.pow((x - 400) / 420, 2));
+    el(wn, `<div class="abs bulb" style="left:${x}px; top:${y}px"></div>`);
+  }
+  const crowd = wn.querySelector('.crowd');
+  [[20,150,.78],[140,160,.74],[255,148,.8],[375,158,.76],[495,150,.79],[615,160,.75],[725,152,.8]].forEach(([x,b,s]) =>
+    el(crowd, `<div class="p" style="--c:#24121b; left:${x}px; bottom:${b - 40}px; transform:scale(${s})"></div>`));
+  [[-30,1.15],[150,1.2],[340,1.12],[520,1.22],[700,1.16]].forEach(([x,s]) =>
+    el(crowd, `<div class="p" style="--c:#080406; left:${x}px; bottom:-40px; transform:scale(${s})"></div>`));
+
+  // figures: boxes on two glass shelves
+  const fg = document.getElementById('figures');
+  el(fg, '<div class="abs glass" style="top:300px"></div>');
+  el(fg, '<div class="abs glass" style="top:566px"></div>');
+  const fbox = (x, y, w, h, c, name) => el(fg, `<div class="fbox" style="--c:${c}; left:${x}px; top:${y}px; width:${w}px; height:${h}px"><div class="band"></div><div class="win"><img src="${C(name)}" alt=""></div><div class="foot"></div></div>`);
+  fbox(110, 62, 175, 238, '#111', 'chainsaw-man-01');
+  fbox(312, 50, 175, 250, 'var(--sakura)', 'frieren-02');
+  fbox(514, 62, 175, 238, 'var(--sun)', 'spy-x-family-01');
+  fbox(40, 360, 160, 206, 'var(--berry)', 'jujutsu-kaisen-01');
+  fbox(222, 352, 160, 214, '#f2f2f2', 'oshi-no-ko-01');
+  fbox(404, 360, 160, 206, '#6fb3ff', 'dandadan-01');
+  fbox(586, 352, 160, 214, 'var(--tone)', 'sakamoto-days-01');
+
+  // manga wall: 25 covers in a tilted grid
+  const wall = document.querySelector('#cat-manga .wall');
+  for (let i = 0; i < 25; i++) el(wall, `<div class="cv"><img src="${C(all[(i * 5) % all.length])}" alt=""></div>`);
+
+  // blu-ray: three cases in a fan
+  const br = document.getElementById('cat-bluray');
+  [['spy-x-family-01', 110, 250, -10, 1], ['chainsaw-man-01', 390, 250, 10, 1], ['frieren-01', 250, 215, 0, 2]].forEach(([n, x, y, r, z]) =>
+    el(br, `<div class="case" style="left:${x}px; top:${y}px; transform:rotate(${r}deg); z-index:${z}"><div class="art"><img src="${C(n)}" alt=""></div></div>`));
+
+  // merch: pins, sticker sheet, keychains
+  const mc = document.getElementById('cat-merch');
+  const sheet = mc.querySelector('.sheet');
+  ['frieren-01','spy-x-family-01','dandadan-01','oshi-no-ko-01','witch-hat-atelier-01','chainsaw-man-01','haikyuu-01','one-piece-01']
+    .forEach(n => el(sheet, `<span><img src="${C(n)}" alt=""></span>`));
+  [['frieren-03',560,110],['spy-x-family-02',640,300],['jujutsu-kaisen-02',540,470],['sakamoto-days-01',650,650]].forEach(([n,x,y]) =>
+    el(mc, `<div class="pin" style="left:${x}px; top:${y}px"><img src="${C(n)}" alt=""></div>`));
+  el(mc, `<div class="abs key" style="left:560px; top:790px; transform:rotate(-8deg)"><div class="face"><img src="${C('dandadan-01')}" alt=""></div></div>`);
+
+  // shop: three shelves of spines and faced-out covers
+  const sh = document.getElementById('shop');
+  const spineColours = ['#ff8fb1','#ffe45c','#f4f4f4','#d93a73','#3a3a3a','#8fc3ff','#cfcfcf','#ffffff','#1d1d1d','#ffb3c9'];
+  [480, 700, 920].forEach((top, r) => {
+    el(sh, `<div class="plank" style="top:${top}px"></div>`);
+    const row = el(sh, `<div class="row" style="top:${top - 190}px; height:190px"></div>`);
+    let k = r * 7;
+    for (let i = 0; i < 26; i++) {
+      if (i === 4 + r || i === 13 - r || i === 20) {
+        const c = cover(row, all[(k * 3 + i) % all.length], 0, 0, 118, 0); c.style.height = '177px';
+      } else {
+        const w = 20 + ((i * 7 + r * 3) % 4) * 5, h = 150 + ((i * 13 + r * 5) % 5) * 9;
+        el(row, `<div class="sp" style="width:${w}px; height:${h}px; background:${spineColours[(i + k) % spineColours.length]}"></div>`);
+      }
+      k++;
+    }
+  });
+
+  // drawing club: reference covers taped down
+  const dc = document.getElementById('drawing-club');
+  const book2 = dc.querySelector('.book2');
+  cover(book2, 'blue-period-01', 40, 44, 170, 3, 'box-shadow:0 6px 10px -4px rgba(0,0,0,.35)');
+  el(book2, '<div class="tape" style="left:80px; top:32px; transform:rotate(-4deg)"></div>');
+  cover(dc, 'witch-hat-atelier-01', 610, 10, 150, 8, 'box-shadow:0 6px 10px -4px rgba(0,0,0,.35)');
+  el(dc, '<div class="tape" style="left:648px; top:0; transform:rotate(10deg)"></div>');
+
+  // cosplay: spotlights, three entries with rosettes, pumpkins, confetti
+  const cp = document.getElementById('cosplay');
+  [[20,-10],[250,0],[480,10]].forEach(([x,r]) => el(cp, `<div class="spot" style="left:${x}px; transform:rotate(${r}deg)"></div>`));
+  [['witch-hat-atelier-01',95,-4,'2'],['frieren-01',315,2,'1'],['dandadan-01',535,5,'3']].forEach(([n,x,r,place]) => {
+    cover(cp, n, x, 170, 170, r);
+    el(cp, `<div class="rosette" style="left:${x + 120}px; top:150px">${place}</div>`);
+  });
+  [[30,520],[190,540],[560,535],[700,515]].forEach(([x,y]) => el(cp, `<div class="pumpkin" style="left:${x}px; top:${y}px"></div>`));
+  const confettiColours = ['#ff8fb1','#ffe45c','#ffffff','#d93a73'];
+  for (let i = 0; i < 46; i++) {
+    const x = (i * 173) % 800, y = (i * 97) % 330, r = (i * 47) % 180;
+    el(cp, `<div class="confetti" style="left:${x}px; top:${y}px; transform:rotate(${r}deg); background:${confettiColours[i % 4]}"></div>`);
+  }
+
+  // swap meet: piles of books on the table
+  const sm = document.getElementById('swap-meet');
+  const pile = (x, y, names) => names.forEach((n, i) => cover(sm, n, x + i * 6, y - i * 8, 150, ((i * 37) % 17) - 8));
+  pile(50, 70, ['one-piece-01','haikyuu-01','chainsaw-man-01']);
+  pile(300, 40, ['spy-x-family-01','dandadan-01','frieren-02','look-back']);
+  pile(560, 60, ['oshi-no-ko-01','jujutsu-kaisen-01','sakamoto-days-01']);
+  pile(170, 330, ['delicious-in-dungeon-01','summer-hikaru-died-01','frieren-04']);
+</script>
+</body>
+</html>
