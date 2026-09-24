@@ -1920,37 +1920,39 @@ address {
     display: none;
   }
 
-  /* Phones get a fixed grid instead of wrapping, so Basket and Menu always
-     sit on the right: logo and dark mode on top, then Basket and Menu,
-     then the search bar */
+  /* Phones get a fixed grid instead of wrapping: logo and dark mode on
+     top, then Menu on the left and Basket on the right, then the search
+     bar */
   .header-main {
     display: grid;
-    grid-template-columns: 1fr auto auto;
+    grid-template-columns: 1fr auto;
     gap: var(--space-s);
     padding-block: var(--space-s);
   }
 
   .logo {
-    grid-column: 1 / 3;
+    grid-area: 1 / 1;
     justify-self: start;
     font-size: 1.3rem;
   }
 
   .theme-toggle {
-    grid-column: 3;
+    grid-area: 1 / 2;
     justify-self: end;
   }
 
-  .basket-link {
-    grid-column: 2;
+  .menu-toggle {
+    grid-area: 2 / 1;
+    justify-self: start;
   }
 
-  .menu-toggle {
-    grid-column: 3;
+  .basket-link {
+    grid-area: 2 / 2;
+    justify-self: end;
   }
 
   .search {
-    grid-column: 1 / -1;
+    grid-area: 3 / 1 / 4 / -1;
     width: 100%;
   }
 
