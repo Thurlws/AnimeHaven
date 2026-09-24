@@ -526,6 +526,57 @@ const BOOKS = [
     description: 'A small town slowly comes undone as spirals start showing up everywhere, in shells, in hair, in the shape of the whole story itself. This deluxe hardcover collects all three volumes of the horror classic in one oversized book.',
     note: 'Junji Ito ruined spirals for me forever. Read it in daylight, trust me.'
   },
+  {
+    id: 'steel-ball-run-01',
+    format: 'Hardcover',
+    title: "JoJo's Bizarre Adventure Part 7: Steel Ball Run, Vol. 1",
+    series: "JoJo's Bizarre Adventure Part 7: Steel Ball Run",
+    volume: 1,
+    authors: 'Hirohiko Araki',
+    price: 16.99,
+    publisher: 'VIZ Media',
+    pages: 394,
+    isbn: '9781974752546',
+    genres: ['action'],
+    status: 'in-stock',
+    due: '',
+    isNew: false,
+    description: 'Riders from all over the world line up in the Wild West for a horse race across America. Johnny Joestar, a former jockey who can no longer walk, briefly stands up again after watching the mysterious Gyro Zeppeli fight, and joins the race to find out how. A deluxe hardcover with colour pages.'
+  },
+  {
+    id: 'steel-ball-run-02',
+    format: 'Hardcover',
+    title: "JoJo's Bizarre Adventure Part 7: Steel Ball Run, Vol. 2",
+    series: "JoJo's Bizarre Adventure Part 7: Steel Ball Run",
+    volume: 2,
+    authors: 'Hirohiko Araki',
+    price: 16.99,
+    publisher: 'VIZ Media',
+    pages: 394,
+    isbn: '9781974755172',
+    genres: ['action'],
+    status: 'in-stock',
+    due: '',
+    isNew: false,
+    description: "Gyro finishes the first stage in the lead, but three riders have turned up dead along the way. The famous cowboy Mountain Tim is deputised to find out who did it, and the hoofprints lead him straight to Johnny and Gyro, out in the Arizona desert."
+  },
+  {
+    id: 'steel-ball-run-03',
+    format: 'Hardcover',
+    title: "JoJo's Bizarre Adventure Part 7: Steel Ball Run, Vol. 3",
+    series: "JoJo's Bizarre Adventure Part 7: Steel Ball Run",
+    volume: 3,
+    authors: 'Hirohiko Araki',
+    price: 16.99,
+    publisher: 'VIZ Media',
+    pages: 400,
+    isbn: '9781974758371',
+    genres: ['action'],
+    status: 'in-stock',
+    due: '',
+    isNew: false,
+    description: "Johnny and Gyro are near the front of the pack and close to the next finish line when the attacks start again. When they finally work out why they keep being targeted, it turns out the Steel Ball Run was never really just a race."
+  },
 
   // ---------- Figures, Blu-ray and merch (photos in images/products/) ----------
   {
