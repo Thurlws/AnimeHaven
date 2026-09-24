@@ -76,6 +76,14 @@
     </div>
 
     <nav class="site-nav" id="site-nav" aria-label="Main">
+      <!-- Top of the slide-in menu on phones (hidden on bigger screens) -->
+      <div class="nav-head">
+        <span class="nav-title">Menu</span>
+        <button class="nav-close" type="button">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+          <span class="visually-hidden">Close menu</span>
+        </button>
+      </div>
       <ul class="wrap nav-list">
         <li><a href="manga.html">Manga</a></li>
         <li><a href="manga.html?cat=figures">Figures</a></li>
@@ -84,6 +92,8 @@
         <li><a href="events.html" aria-current="page">Events</a></li>
       </ul>
     </nav>
+    <!-- Dims the page behind the phone menu; tapping it closes the menu -->
+    <div class="nav-backdrop"></div>
   </header>
 
   <main id="main">
