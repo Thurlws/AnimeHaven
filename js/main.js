@@ -4,16 +4,47 @@
 
 
 // 1. Mobile menu
-// On phones the nav is hidden. The button flips aria-expanded (so screen
-// readers hear "expanded/collapsed") and adds the class that shows the nav.
+// On phones the nav slides in over the page (the CSS does the animation).
+// The Menu button flips aria-expanded (so screen readers hear
+// "expanded/collapsed") and adds the class that opens it. The close button,
+// the dimmed backdrop, the Escape key and picking a link all close it.
 const menuButton = document.querySelector('.menu-toggle');
 const siteNav = document.getElementById('site-nav');
 
 if (menuButton && siteNav) {
+  const closeButton = siteNav.querySelector('.nav-close');
+  const backdrop = document.querySelector('.nav-backdrop');
+  const phoneWidth = window.matchMedia('(max-width: 37.5rem)');
+
+  function setMenu(open) {
+    menuButton.setAttribute('aria-expanded', open);
+    siteNav.classList.toggle('is-open', open);
+    // Stop the page behind the menu from scrolling while it's open
+    document.documentElement.classList.toggle('menu-open', open);
+    if (open) closeButton.focus();
+  }
+
+  function closeMenu() {
+    if (!siteNav.classList.contains('is-open')) return;
+    setMenu(false);
+    menuButton.focus(); // back to where the user was
+  }
+
   menuButton.addEventListener('click', function () {
-    const isOpen = menuButton.getAttribute('aria-expanded') === 'true';
-    menuButton.setAttribute('aria-expanded', !isOpen);
-    siteNav.classList.toggle('is-open', !isOpen);
+    setMenu(menuButton.getAttribute('aria-expanded') !== 'true');
+  });
+  closeButton.addEventListener('click', closeMenu);
+  backdrop.addEventListener('click', closeMenu);
+  siteNav.addEventListener('click', function (event) {
+    if (event.target.closest('a')) setMenu(false);
+  });
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') closeMenu();
+  });
+  // Turning a phone sideways (or widening the window) swaps back to the
+  // normal nav bar, so don't leave the page locked
+  phoneWidth.addEventListener('change', function () {
+    if (!phoneWidth.matches) setMenu(false);
   });
 }
 
