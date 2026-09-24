@@ -1238,25 +1238,46 @@ address {
   transform: rotate(8deg);
 }
 
-/* The highlighted book (main.js adds .is-active on hover and keyboard focus):
-   pulled up off the shelf with a pink glow */
-.spine.is-active,
-.shelf-cover.is-active {
+/* The highlighted book: pulled up off the shelf with a pink glow.
+   This is CSS only, on purpose. The browser always knows where the pointer
+   and keyboard focus are, so a book can't stay lifted after the pointer
+   leaves, after clicking through and coming Back, or after a tap. main.js
+   only fills in the preview card; it never lifts or lowers books.
+   Pointer hover is limited to devices that can hover (mouse, trackpad), so
+   a tap on a phone doesn't leave a book stuck in the air. Keyboard focus
+   (Tab) lifts a book on every device. */
+@media (hover: hover) {
+  .spine:hover,
+  .shelf-cover:hover {
+    transform: translateY(-1.25rem);
+  }
+
+  .spine:hover {
+    box-shadow: inset -4px 0 0 rgb(0 0 0 / 0.18), 0 0 0 3px var(--sakura), 0 14px 22px -6px rgb(255 143 177 / 0.9);
+  }
+
+  .shelf-cover:hover img {
+    box-shadow: 0 0 0 3px var(--sakura), 0 18px 28px -8px rgb(255 143 177 / 0.9);
+  }
+
+  /* While the mouse is on the shelf, the other books fade back a little */
+  .shelf:hover .spine:not(:hover),
+  .shelf:hover .shelf-cover:not(:hover) {
+    opacity: 0.55;
+  }
+}
+
+.spine:focus-visible,
+.shelf-cover:focus-visible {
   transform: translateY(-1.25rem);
 }
 
-.spine.is-active {
+.spine:focus-visible {
   box-shadow: inset -4px 0 0 rgb(0 0 0 / 0.18), 0 0 0 3px var(--sakura), 0 14px 22px -6px rgb(255 143 177 / 0.9);
 }
 
-.shelf-cover.is-active img {
+.shelf-cover:focus-visible img {
   box-shadow: 0 0 0 3px var(--sakura), 0 18px 28px -8px rgb(255 143 177 / 0.9);
-}
-
-/* While the mouse is on the shelf, the other books fade back a little */
-.shelf:hover .spine:not(.is-active),
-.shelf:hover .shelf-cover:not(.is-active) {
-  opacity: 0.55;
 }
 
 /* Preview card: shows the highlighted book */
