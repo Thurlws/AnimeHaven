@@ -1327,6 +1327,12 @@ address {
   color: #000000;
 }
 
+/* ...except the "Added ✓" flash, whose own label has to stay hidden under
+   the tick, even while the pointer is still on the button after clicking */
+:root[data-theme="dark"] .js-add.is-added {
+  color: transparent;
+}
+
 
 /* ==========================================================
    PAGE STYLES (manga, product, events, basket) go below this line
