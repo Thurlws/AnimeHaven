@@ -418,13 +418,32 @@ if (shelf) {
     addButton.dataset.cover = cover;
   }
 
+  // Puts every book back on the shelf. The preview card keeps showing the
+  // last book, so its buttons can still be clicked.
+  function clearHighlight() {
+    shelfBooks.forEach(function (item) { item.classList.remove('is-active'); });
+  }
+
   shelfBooks.forEach(function (item) {
     item.addEventListener('mouseenter', function () { highlightBook(item.dataset.id); });
     item.addEventListener('focus', function () { highlightBook(item.dataset.id); });
   });
 
-  // Start with the book the preview card already shows
-  highlightBook(document.getElementById('preview-add').dataset.id);
+  // Leaving the shelf with the mouse drops the book back, unless it was
+  // reached with the keyboard (Tab), in which case it stays lifted
+  shelf.addEventListener('mouseleave', function () {
+    const focused = document.activeElement;
+    if (shelf.contains(focused) && focused.matches(':focus-visible')) {
+      highlightBook(focused.dataset.id);
+    } else {
+      clearHighlight();
+    }
+  });
+
+  // Tabbing out of the shelf drops the book back too
+  shelf.addEventListener('focusout', function (event) {
+    if (!shelf.contains(event.relatedTarget)) clearHighlight();
+  });
 }
 
 
