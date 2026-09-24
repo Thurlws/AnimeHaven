@@ -1202,17 +1202,19 @@ address {
   letter-spacing: 0.05em;
 }
 
-/* A book facing out, with a yellow price sticker */
+/* A book facing out, with a yellow price sticker. Its height comes from
+   --h like the spines, so a volume facing out stands as tall as the rest
+   of its series; the width follows from the cover's 2:3 shape. */
 .shelf-cover {
   position: relative;
   display: block;
-  width: 9rem;
   margin-inline: 0.4rem;
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
 .shelf-cover img {
-  width: 100%;
+  height: var(--h, 13.5rem);
+  width: auto;
   aspect-ratio: 2 / 3;
   object-fit: cover;
   border-radius: 3px 6px 0 0;
