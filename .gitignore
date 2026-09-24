@@ -1,6 +1,7 @@
 # Machine-specific files
 .claude/
-obsidian_vault/
+Obsidian Vault/
 Thumbs.db
 .DS_Store
 node_modules/
+skills-lock.json
