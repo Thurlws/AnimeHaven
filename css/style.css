@@ -1971,18 +1971,40 @@ address {
     display: inline-flex;
   }
 
-  /* The nav is hidden until main.js adds the class "is-open" */
+  /* The nav is folded shut until main.js adds the class "is-open". The
+     grid row grows from 0fr to 1fr (the height of the links) so it slides
+     open and shut, while the links fade and drop into place. visibility
+     keeps the closed links out of the Tab order and away from screen
+     readers; it flips only once the closing slide has finished. */
   .site-nav {
-    display: none;
+    display: grid;
+    grid-template-rows: 0fr;
+    border-block-width: 0;
+    visibility: hidden;
+    transition: grid-template-rows 0.18s ease-in, border-width 0.18s, visibility 0s 0.18s;
   }
 
   .site-nav.is-open {
-    display: block;
+    grid-template-rows: 1fr;
+    border-block-width: 1px;
+    visibility: visible;
+    transition: grid-template-rows 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), border-width 0.22s;
   }
 
   .nav-list {
     flex-direction: column;
     gap: 0;
+    min-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(-0.5rem);
+    transition: opacity 0.15s, transform 0.18s ease-in;
+  }
+
+  .site-nav.is-open .nav-list {
+    opacity: 1;
+    transform: none;
+    transition: opacity 0.2s 0.05s, transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
   .nav-list a {
@@ -2113,6 +2135,13 @@ address {
   .toast,
   .spine,
   .shelf-cover {
+    transition: none;
+  }
+
+  .site-nav,
+  .site-nav.is-open,
+  .nav-list,
+  .site-nav.is-open .nav-list {
     transition: none;
   }
 
