@@ -418,21 +418,17 @@ document.querySelectorAll('.reserve-btn').forEach(function (button) {
 
 
 // 8. Homepage shelf
-// Pointing at a book (mouse or keyboard) pulls it off the shelf and shows it
-// in the preview card next to the shelf. The details come from BOOKS (books.js).
+// Pointing at a book (mouse or keyboard) shows it in the preview card next
+// to the shelf. The details come from BOOKS (books.js). Lifting the book off
+// the shelf is done by the CSS alone (:hover and :focus-visible), so nothing
+// here can leave a book stuck in the air. The preview card keeps the last
+// book, so its buttons can still be clicked after the pointer moves over.
 const shelf = document.querySelector('.shelf');
 
 if (shelf) {
-  const shelfBooks = shelf.querySelectorAll('[data-id]');
-
-  function highlightBook(id) {
+  function showInPreview(id) {
     const book = BOOKS.find(function (b) { return b.id === id; });
     const cover = 'images/covers/' + id + '.jpg';
-
-    // Only the chosen book gets the "is-active" class (lifted and glowing in the CSS)
-    shelfBooks.forEach(function (item) {
-      item.classList.toggle('is-active', item.dataset.id === id);
-    });
 
     document.getElementById('preview-cover').src = cover;
     document.getElementById('preview-badge').textContent = book.isNew ? 'New this week' : 'On the shelf';
@@ -449,31 +445,9 @@ if (shelf) {
     addButton.dataset.cover = cover;
   }
 
-  // Puts every book back on the shelf. The preview card keeps showing the
-  // last book, so its buttons can still be clicked.
-  function clearHighlight() {
-    shelfBooks.forEach(function (item) { item.classList.remove('is-active'); });
-  }
-
-  shelfBooks.forEach(function (item) {
-    item.addEventListener('mouseenter', function () { highlightBook(item.dataset.id); });
-    item.addEventListener('focus', function () { highlightBook(item.dataset.id); });
-  });
-
-  // Leaving the shelf with the mouse drops the book back, unless it was
-  // reached with the keyboard (Tab), in which case it stays lifted
-  shelf.addEventListener('mouseleave', function () {
-    const focused = document.activeElement;
-    if (shelf.contains(focused) && focused.matches(':focus-visible')) {
-      highlightBook(focused.dataset.id);
-    } else {
-      clearHighlight();
-    }
-  });
-
-  // Tabbing out of the shelf drops the book back too
-  shelf.addEventListener('focusout', function (event) {
-    if (!shelf.contains(event.relatedTarget)) clearHighlight();
+  shelf.querySelectorAll('[data-id]').forEach(function (item) {
+    item.addEventListener('mouseenter', function () { showInPreview(item.dataset.id); });
+    item.addEventListener('focus', function () { showInPreview(item.dataset.id); });
   });
 }
 
