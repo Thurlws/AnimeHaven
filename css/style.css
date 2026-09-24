@@ -1293,13 +1293,30 @@ address {
 
 /* The title and author always take up the same space (3 lines and 2 lines),
    so the card never changes height and the shelf never jumps */
+/* The card must stay the same height whichever book it shows. The shelf
+   sits beside it, lined up along the bottom, so if the card grew (say for
+   a long title that wraps onto an extra line) the whole shelf would shift
+   down, and back up for the next book. So the title and author get a fixed
+   number of lines: enough for the longest titles we sell (JoJo's Bizarre
+   Adventure Part 7: Steel Ball Run takes 4), and anything longer is cut
+   off with "..." rather than stretching the card. */
 .shelf-preview h3 {
-  min-height: 3.45em; /* 3 lines x line-height 1.15 */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  height: 4.6em; /* 4 lines x line-height 1.15 */
+  overflow: hidden;
   margin-top: var(--space-xs);
 }
 
 .shelf-preview .product-author {
-  min-height: 3.1em; /* 2 lines x line-height 1.55 */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  height: 3.1em; /* 2 lines x line-height 1.55 */
+  overflow: hidden;
 }
 
 .shelf-preview .btn {
