@@ -1,5 +1,6 @@
 # Machine-specific files
-.claude/settings.local.json
+.claude/
+obsidian_vault/
 Thumbs.db
 .DS_Store
 node_modules/
